@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/video_item_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/video_item_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/video_item_img"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/video_item_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/video_item_img"
+            android:layout_alignBottom="@+id/video_item_img"
+            android:background="@color/black"
+            android:padding="2dp"
+            android:singleLine="false"
+            android:text="0:20"
+            android:textColor="@color/exo_white" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/video_item_details"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/video_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="name"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/video_item_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="1.00mb"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/video_item_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="2020-03-19"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
