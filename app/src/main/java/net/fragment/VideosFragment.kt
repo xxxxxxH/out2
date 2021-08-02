@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.layout_fragment.*
 import net.adapter.VideoAdapter
 import net.basicmodel.MainActivity
@@ -14,9 +15,10 @@ import net.basicmodel.R
 import net.basicmodel.VideoActivity
 import net.entity.VideoEntity
 import net.interFace.OnItemClickListener
+import net.utils.Contanst
+import net.utils.Utils
 import java.util.*
 import kotlin.collections.ArrayList
-import net.utils.Contanst;
 
 
 class VideosFragment : Fragment(), OnItemClickListener {
@@ -36,8 +38,8 @@ class VideosFragment : Fragment(), OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         videos = (activity as MainActivity).getData()
+        progressBar.visibility = View.GONE
         if (videos!!.size > 0) {
-            progressBar.visibility = View.GONE
             emptyView.visibility = View.GONE
             recycler.visibility = View.VISIBLE
             adapter = VideoAdapter(videos, activity, activity, Contanst.TYPE_VIDEOS)
@@ -61,6 +63,8 @@ class VideosFragment : Fragment(), OnItemClickListener {
         if (!Contanst.historys.contains(entity)) {
             Contanst.historys.add(entity)
         }
+        Utils.saveKey(name)
+        MMKV.defaultMMKV()?.encode(name,entity)
         activity?.startActivity(intent)
     }
 }

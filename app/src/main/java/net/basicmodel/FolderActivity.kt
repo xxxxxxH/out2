@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.layout_fragment.*
 import net.adapter.VideoAdapter
 import net.entity.VideoEntity
 import net.interFace.OnItemClickListener
 import net.utils.Contanst
+import net.utils.Utils
 
 @Suppress("UNCHECKED_CAST")
 class FolderActivity : AppCompatActivity(), OnItemClickListener {
@@ -46,6 +48,8 @@ class FolderActivity : AppCompatActivity(), OnItemClickListener {
         if (!Contanst.historys.contains(entity)) {
             Contanst.historys.add(entity)
         }
+        Utils.saveKey(name)
+        MMKV.defaultMMKV()?.encode(name,entity)
         this.startActivity(intent)
     }
 }

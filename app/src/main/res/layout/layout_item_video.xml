@@ -14,8 +14,7 @@
         <ImageView
             android:id="@+id/video_item_img"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop" />
+            android:layout_height="100dp" />
 
         <TextView
             android:id="@+id/video_item_duration"

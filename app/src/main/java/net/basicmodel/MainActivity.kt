@@ -6,13 +6,14 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
+import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.layout_bottom.*
 import net.entity.VideoEntity
 import net.fragment.FoldersFragment
@@ -24,6 +25,7 @@ import net.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        MMKV.initialize(this)
         requestPermissions()
         showPosition(0)
         initView()
@@ -82,6 +85,7 @@ class MainActivity : AppCompatActivity() {
             if (historyFragment != null) {
                 ft.remove(historyFragment!!)
             }
+
         }
 
         if (position == 2) {
@@ -92,6 +96,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 ft.show(historyFragment!!)
             }
+
         }
         ft.commit()
     }
@@ -108,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("Recycle")
+    @SuppressLint("Recycle", "SimpleDateFormat")
     private fun getAllVideos(): ArrayList<VideoEntity> {
         var videos: ArrayList<VideoEntity>? = null
         val cursor = this@MainActivity.contentResolver?.query(
@@ -149,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                 val time = cursor
                     .getInt(
                         cursor
-                            .getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)
+                            .getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)
                     )
 
                 val video = VideoEntity()
@@ -157,8 +162,8 @@ class MainActivity : AppCompatActivity() {
                 video.size = Utils.byteToString(size)
                 video.url = url.toString()
                 video.duration = TimeUtils().times(duration.toLong())
-                val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-                video.time = simpleDateFormat.format(time.toLong())
+                val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                video.time = simpleDateFormat.format(time.toLong() * 1000)
                 videos.add(video)
             }
             cursor.close()
@@ -179,6 +184,7 @@ class MainActivity : AppCompatActivity() {
         )
         return bitmap
     }
+
 
     fun getData(): ArrayList<VideoEntity> {
         return videos!!

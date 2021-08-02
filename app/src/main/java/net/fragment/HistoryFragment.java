@@ -14,8 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.tencent.mmkv.MMKV;
+
 import net.adapter.VideoAdapter;
-import net.basicmodel.MainActivity;
 import net.basicmodel.R;
 import net.basicmodel.VideoActivity;
 import net.entity.VideoEntity;
@@ -25,6 +26,7 @@ import net.utils.Contanst;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class HistoryFragment extends Fragment implements OnItemClickListener {
 
@@ -54,8 +56,25 @@ public class HistoryFragment extends Fragment implements OnItemClickListener {
         emptyView = root.findViewById(R.id.emptyView);
     }
 
+    private ArrayList<VideoEntity> getAllData() {
+        ArrayList<VideoEntity> history = null;
+        HashSet<String> key = (HashSet<String>) MMKV.defaultMMKV().decodeStringSet("key");
+        if (key != null) {
+            history = new ArrayList<>();
+            for (String item : key) {
+                VideoEntity entity = MMKV.defaultMMKV().decodeParcelable(item, VideoEntity.class);
+                if (entity != null) {
+                    history.add(entity);
+                }
+            }
+        }
+        return history;
+    }
+
     private void initData() {
-        data = Contanst.historys;
+
+//        data = Contanst.historys;
+        data = getAllData();
         progressBar.setVisibility(View.GONE);
         if (data.size() > 0) {
             emptyView.setVisibility(View.GONE);

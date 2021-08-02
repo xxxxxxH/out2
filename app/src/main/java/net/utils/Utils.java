@@ -4,10 +4,24 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.tencent.mmkv.MMKV;
+
 import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Utils {
+
+    public static void saveKey(String newKey) {
+        Set<String> key = MMKV.defaultMMKV().decodeStringSet("key");
+        if (key == null) {
+            key = new HashSet<>();
+        }
+        key.add(newKey);
+        MMKV.defaultMMKV().encode("key", key);
+    }
+
     public static final String byteToString(long size) {
 
         long GB = 1024 * 1024 * 1024;//定义GB的计算常量
@@ -40,15 +54,15 @@ public class Utils {
         return (int) (dpValue * scale + 0.5f);
     }
 
-    public static byte[] bitmap2Bytes(Bitmap bitmap)  throws Exception{
+    public static byte[] bitmap2Bytes(Bitmap bitmap) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         return baos.toByteArray();
 
     }
 
 
-    public static Bitmap byte2Bitmap(byte[] data){
+    public static Bitmap byte2Bitmap(byte[] data) {
         return BitmapFactory.decodeByteArray(data, 0, data.length);
     }
 }
